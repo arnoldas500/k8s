@@ -59,3 +59,34 @@ In user account /home/username/.kube (mac users: /Users/username/.kube) edit con
 ```
 $ kubectl --context=username-context get pods
 ```
+
+## Usage:
+### CMD run:
+```
+$ kubectl run gpu-test --rm -t -i --restart=Never --image=akurbanovas/od_tf1:v1 --limits=nvidia.com/gpu=1 -- nvidia-smi
+```
+
+### Get commands with basic output
+```
+kubectl get services                 # List all services in the namespace
+kubectl get pods --all-namespaces    # List all pods in all namespaces
+kubectl get pods -o wide             # List all pods in the namespace, with more details
+kubectl get deployment my-dep        # List a particular deployment
+```
+
+### Describe commands with verbose output
+```
+kubectl describe nodes <node-name>
+kubectl describe pods <pod-name>
+```
+
+### Deleting Resources
+```
+kubectl delete <pod-name>
+kubectl delete -f ./pod.yaml                   # Delete a pod using the type and name specified in pod.yaml
+```
+
+### Get into the bash console of one of your pods:
+```
+kubectl exec -it <pod-name> — /bin/bash
+```
