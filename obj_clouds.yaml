@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+ name: obj-clouds
+spec:
+  restartPolicy: OnFailure
+  containers:
+    - name: od-tf1
+      image: akurbanovas/od_tf1:v1
+      command:
+      - "/bin/bash"
+      - "-c"
+      args:
+      - nviddia-smi
+      resources:
+        limits:
+          nvidia.com/gpu: 1 # requesting 1 GPU
