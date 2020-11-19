@@ -90,3 +90,15 @@ kubectl delete -f ./pod.yaml                   # Delete a pod using the type and
 ```
 kubectl exec -it <pod-name> — /bin/bash
 ```
+
+### Get current namespace and switch namespace using kubens
+```
+kubectl ns
+kubectl ns <namespace-name>
+```
+
+### Get current context and switch context using kubectx
+```
+kubectl ctx
+kubectl ctx <context-name>
+```
