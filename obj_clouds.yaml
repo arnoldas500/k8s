@@ -18,3 +18,30 @@ spec:
         nvidia.com/gpu: "1"
   dnsPolicy: ClusterFirst
   restartPolicy: Never
+—
+#working with hostpath and continues running after starting log prints app is running
+apiVersion: v1
+kind: Pod
+metadata:
+  name: clouds
+spec:
+  containers:
+  - args:
+    - nvidia-smi
+    image: akurbanovas/od_tf1:v1
+    name: clouds
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+    volumeMounts:
+    - name: raid
+      mountPath: /raid
+    ports:
+    - containerPort: 8890
+    resources:
+      limits:
+        nvidia.com/gpu: "1"
+  volumes:
+    - name: raid
+      hostPath:
+        path: /raid
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
