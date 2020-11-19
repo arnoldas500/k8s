@@ -1,17 +1,20 @@
+#working version, completes right away run using kubectl create -f obj_clouds.yaml
 apiVersion: v1
 kind: Pod
 metadata:
- name: obj-clouds
+  labels:
+    run: clouds
+  name: clouds
 spec:
-  restartPolicy: OnFailure
   containers:
-    - name: od-tf1
-      image: akurbanovas/od_tf1:v1
-      command:
-      - "/bin/bash"
-      - "-c"
-      args:
-      - nviddia-smi
-      resources:
-        limits:
-          nvidia.com/gpu: 1 # requesting 1 GPU
+  - args:
+    - nvidia-smi
+    image: akurbanovas/od_tf1:v1
+    name: clouds
+    ports:
+    - containerPort: 8890
+    resources:
+      limits:
+        nvidia.com/gpu: "1"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
