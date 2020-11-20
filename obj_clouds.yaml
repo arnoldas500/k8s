@@ -45,6 +45,7 @@ spec:
         path: /raid
   dnsPolicy: ClusterFirst
   restartPolicy: Never
+—
 #working execute python file with env set in dockerfile 
 apiVersion: v1
 kind: Pod
@@ -72,3 +73,34 @@ spec:
         path: /raid
   dnsPolicy: ClusterFirst
   restartPolicy: Never
+—
+#set workdir, run python code on start with arguments
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: gpu-job
+  name: gpu-job
+spec:
+  containers:
+  - args:
+    - python
+    - train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v1_pets.config
+    image: akurbanovas/od_tf1:v1
+    name: gpu-job
+    volumeMounts:
+    - name: raid
+      mountPath: /raid
+      readOnly: false
+    workingDir: /raid/arnold/clouds_detection/modelsV2/research/object_detection/legacy/
+    resources:
+      limits:
+        nvidia.com/gpu: "1"
+  volumes:
+    - name: raid
+      hostPath:
+        path: /raid
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
