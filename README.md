@@ -66,6 +66,16 @@ $ kubectl --context=username-context get pods
 $ kubectl run gpu-test --rm -t -i --restart=Never --image=akurbanovas/od_tf1:v1 --limits=nvidia.com/gpu=1 -- nvidia-smi
 ```
 
+### Run and execute python file with args
+```
+$ kubectl run gpu-job --rm -t -i --restart=Never --image=akurbanovas/od_tf1:v1 --limits=nvidia.com/gpu=1 -- python "train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v1_pets.config"
+```
+
+### Convert run into manifest file and save to pod.yaml
+```
+kubectl run gpu-job --restart=Never --image=akurbanovas/od_tf1:v1 --limits=nvidia.com/gpu=1 python "train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v1_pets.config" --dry-run -o yaml > pod.yaml
+```
+
 ### Get commands with basic output
 ```
 kubectl get services                 # List all services in the namespace
