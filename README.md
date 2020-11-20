@@ -60,6 +60,30 @@ In user account /home/username/.kube (mac users: /Users/username/.kube) edit con
 $ kubectl --context=username-context get pods
 ```
 
+### Monitor and edit your jobs, deployments and resources using Lens
+Mac users:
+```
+$ brew cask install lens
+```
+Releases for windows and linux platforms: 
+https://github.com/lensapp/lens/releases/tag/v3.6.9
+
+### Lens
+click on the big plus botton on the left menu to add a cluster. Select your kubeconfig file from the instructions above:
+```
+Mac:
+/Users/<user>/.kube/config
+```
+Linux:
+```
+/home/<user>/.kube/config
+```
+Next select your contexts from the dropdown that you will use (you can select multiple)
+```
+Add cluster(s)
+```
+You can now see your added clusters for each context on the left side menu
+
 ## Usage:
 ### CMD run:
 ```
