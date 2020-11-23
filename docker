@@ -1,0 +1,21 @@
+#change docker root dir and fix flag/file issue "unable to configure the Docker daemon with file /etc/docker/daemon.json: the following directives are specified both as a flag and in the configuration file: data-root: (from flag: /var/lib/docker, from file: /raid/docker)"
+#if Device or resource busy umount full path and delete folder after (check with ps aux | grep -i docker | grep -v grep)
+emacs /etc/systemd/system/docker.service.d/docker.conf
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd
+
+systemctl daemon-reload
+systemctl restart docker
+
+/etc/docker/daemon.json
+{
+    "data-root": "/raid/docker",
+    "default-runtime": "nvidia",
+    "runtimes": {
+        "nvidia": {
+            "path": "nvidia-container-runtime",
+            "runtimeArgs": []
+        }
+    }
+}
