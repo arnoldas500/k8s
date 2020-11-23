@@ -8,7 +8,7 @@ ExecStart=/usr/bin/dockerd
 systemctl daemon-reload
 systemctl restart docker
 
-/etc/docker/daemon.json
+/etc/docker/daemon.json #or change data-root to new location
 {
     "data-root": "/raid/docker",
     "default-runtime": "nvidia",
@@ -19,3 +19,25 @@ systemctl restart docker
         }
     }
 }
+
+
+#stop docker
+$ sudo systemctl stop docker
+
+#check to make sure its stop and resolve any conflicts or mount mappings
+ps aux | grep -i docker | grep -v grep
+
+#copy files from old locaiton to new location saving all permisisons 
+sudo rsync -axPS /var/lib/docker/ /raid/docker
+
+#start docker back up and fix any issues mentioned at top of page
+sudo systemctl start docker
+
+#check to make sure root data dir changed and everything is back online
+docker info | grep 'Docker Root Dir'
+docker ps
+
+NOTE: before starting update restart policy on running containers to auto restart from saved state
+docker update --restart always 98396bea6264 271988eae97f 080c7d288256 c9fa3be74a73...
+
+
