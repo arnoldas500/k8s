@@ -1,0 +1,27 @@
+#dockerfile with node installed  and auto start
+FROM node
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+COPY index.js ./
+COPY ./app ./app
+
+RUN npm install
+
+EXPOSE 3000
+CMD [ "npm", "start" ]
+
+#node container on k8s yaml config
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-api
+  labels:
+    name: simple-api
+spec:
+  containers:
+  - name: simple-api
+    image: serverlab/simple-api:1.0.0
+    ports:
+    - containerPort: 3000
