@@ -25,3 +25,19 @@ spec:
     image: serverlab/simple-api:1.0.0
     ports:
     - containerPort: 3000
+
+
+#k8s service for node pod
+#Service resources provide a static entry way into pods. They are not pods themselves, but resources that direct traffic to any pod attached to it
+#unlike kubectl create for pod need to apply for service : kubectl apply -f simple-api-service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-api
+spec:
+  selector:
+    app: simple-api
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
