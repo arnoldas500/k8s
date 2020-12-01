@@ -136,3 +136,16 @@ kubectl ns <namespace-name>
 kubectl ctx
 kubectl ctx <context-name>
 ```
+### Forward a local port to a port in a Pod 
+Note: make sure to sepcify containerPort in yaml file ( can use this for services too)
+```
+kubectl port-forward pod-name 7000:6379
+```
+or (deployment, pods or replicaset)
+```
+kubectl port-forward deployment or pods or replicaset/deployment-name 7000:6379
+```
+or (service)
+```
+kubectl port-forward service/redis-master 7000:redis
+```
