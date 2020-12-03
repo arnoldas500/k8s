@@ -6,7 +6,6 @@ If you have a mac you can directly access the cluster from your built in termina
 ```
 $ brew install kubernetes-cli
 $ scp -r username@169.226.59.--:/home/username/.kube ~/.kube
-$ mkdir .certs && scp -r username@169.226.59.--:/home/username/.certs ~/
 ```
 
 ## Linux users
@@ -23,7 +22,7 @@ $ sudo mv ./kubectl /usr/local/bin/kubectl
 ## Access cluster
 Create a private key 
 ```
-$ sudo openssl genrsa -out vanessa.key 2048
+$ sudo openssl genrsa -out username.key 2048
 ```
 specify your username and group in the -subj section (CN is for the username and O for the group, email me if not sure of group you are in)
 ```
@@ -42,6 +41,7 @@ Removing (or commenting out) RANDFILE = $ENV::HOME/.rnd from /etc/ssl/openssl.cn
 Create a “.certs” directory, store the public and private key
 ```
 $ mkdir .certs && mv username.crt username.key .certs
+$ chown -R username: /home/username/.certs
 ```
 Create Kubernetes config file.
 ```
