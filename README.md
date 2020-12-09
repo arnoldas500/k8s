@@ -149,3 +149,28 @@ or (service)
 ```
 kubectl port-forward service/redis-master 7000:redis
 ```
+
+### Labeling
+put labeling in metadata ex:
+```
+metadata:
+  name: testPod
+  labels:
+    env: development
+```
+#### get pods and show labels
+```
+kubectl get pods --show-labels
+```
+#### add another label to a running pod
+```
+kubectl label pods testPod owner=arnold
+```
+#### filer pods by owner (can use --selector or shorthand -l)
+```
+kubectl get pods --selector owner=arnold
+```
+#### delete multiple pods by using a filter 
+```
+kubectl delete pods -l 'env in (production, development)'
+```
