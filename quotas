@@ -1,0 +1,67 @@
+Apply an object-count quota to the namespace to manage pvcs load balancers and node ports
+$ kubectl create namespace quota-example
+$ kubectl apply -f mem-cpu-quota.yaml --namespace=quota-example
+```
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: mem-cpu-demo
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+```
+
+#View detailed information about the ResourceQuota:
+$ kubectl get resourcequota mem-cpu-demo --namespace=quota-example --output=yaml
+
+#create a pod test
+kubectl apply -f quota-mem-cpu-pod.yaml --namespace=quota-example
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quota-mem-cpu-demo
+spec:
+  containers:
+  - name: quota-mem-cpu-demo-ctr
+    image: nginx
+    resources:
+      limits:
+        memory: "800Mi"
+        cpu: "800m"
+      requests:
+        memory: "600Mi"
+        cpu: "400m"
+```
+
+#Verify that the Pod's Container is running:
+$ kubectl get pod quota-mem-cpu-demo --namespace=quota-example
+
+#now view resource info again and see thhe difff
+$ kubectl get resourcequota mem-cpu-demo --namespace=quota-example --output=yaml
+
+#try to create a seccondd pod that would equal more mem than you have 
+$ kubectl apply -f https://k8s.io/examples/admin/resource/quota-mem-cpu-pod-2.yaml --namespace=quota-example
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quota-mem-cpu-demo-2
+spec:
+  containers:
+  - name: quota-mem-cpu-demo-2-ctr
+    image: redis
+    resources:
+      limits:
+        memory: "1Gi"
+        cpu: "800m"
+      requests:
+        memory: "700Mi"
+        cpu: "400m"
+ ```
+ 
+ # to delete namespace andd all of its containerrs 
+ $ kubectl delete namespace quota-example
