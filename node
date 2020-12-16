@@ -41,3 +41,36 @@ spec:
   - protocol: TCP
     port: 3000
     targetPort: 3000
+
+
+#run as root and share process id 
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: outages
+  name: outages
+spec:
+  shareProcessNamespace: true
+  containers:
+  - args:
+    - node
+    - app_get_outages_v2.js
+    image: akurbanovas/kara_kce:v5
+    name: outages
+    securrityContext:
+        allowPrivilegeEscalation: false
+        runAsUser: 0
+    volumeMounts:
+    - name: raid
+      mountPath: /raid
+      readOnly: false
+    workingDir: /raid/edd/xcite_team/EDD/web_scraper/
+  volumes:
+    - name: raid
+      hostPath:
+        path: /raid
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
