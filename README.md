@@ -174,3 +174,20 @@ kubectl get pods --selector owner=arnold
 ```
 kubectl delete pods -l 'env in (production, development)'
 ```
+
+### User Roles
+Every user needs a role and binding to use the k8s API
+#### delete role
+```
+kubectl delete role jupyter-user
+```
+#### delete binding
+```
+kubectl delete rolebinding jupyter-user-binding
+```
+#### list roles and bindings 
+```
+kubectl get rolebindings,roles \
+--all-namespaces  \
+-o custom-columns='KIND:kind,NAMESPACE:metadata.namespace,NAME:metadata.name,SERVICE_ACCOUNTS:subjects[?(@.kind=="ServiceAccount")].name'
+```
