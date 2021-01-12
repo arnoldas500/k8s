@@ -76,3 +76,38 @@ spec:
   dnsPolicy: ClusterFirst
   restartPolicy: Never
 status: {}
+-
+#latest version, using command will use env from dockerfile with user flag, pass arguments on seperate lines
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: gpu-job
+  name: gpu-job
+spec:
+  containers:
+  - image: akurbanovas/od_tf1:v1
+    workingDir: /raid/arnold/clouds_detection/modelsV2/research/object_detection/legacy/
+    command:
+    - python3
+    - -u
+    - train.py
+    - --logtostderr
+    - --train_dir=training/
+    - --pipeline_config_path=training/ssd_mobilenet_v1_pets.config
+    name: gpu-job
+    volumeMounts:
+    - name: raid
+      mountPath: /raid
+      readOnly: false
+    #workingDir: /raid/arnold/clouds_detection/modelsV2/research/object_detection/legacy/
+    resources:
+      limits:
+        nvidia.com/gpu: "1"
+  volumes:
+    - name: raid
+      hostPath:
+        path: /raid
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
