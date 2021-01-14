@@ -1,0 +1,59 @@
+hub:
+  cookieSecret: ""
+  prePuller:
+    enabled: false
+  extraConfig:
+    8-gpu: |
+      c.KubeSpawner.extra_resource_limits = { 'nvidia.com/gpu': 1 }
+proxy:
+  service:
+    loadBalancerIP: 169.226.59.67
+  secretToken: ""
+  https:
+    enabled: true
+    hosts:
+      - hulk.asrc.albany.edu
+    letsencrypt:
+      contactEmail: akurbanovas@albany.edu
+singleuser:
+  extraEnv:
+    GRANT_SUDO: "yes"
+    NOTEBOOK_ARGS: "--allow-root"
+  uid: 0
+  cmd: start-singleuser.sh
+  storage:
+    extraVolumes:
+      - name: jupyterhub-shared
+        hostPath:
+          path: /raid
+    extraVolumeMounts:
+      - name: jupyterhub-shared
+        mountPath: /home/shared
+  defaultUrl: "/lab"
+  image:
+    name: jupyter/minimal-notebook
+    tag: latest
+  profileList:
+    - display_name: "Minimal environment"
+      description: "Testing just  default with 1 gpu"
+      default: true
+    - display_name: "Datascience environment"
+      description: " Python, R, and Julia Kernels"
+      kubespawner_override:
+        image: jupyter/datascience-notebook:2343e33dec46
+    - display_name: "Spark environment"
+      description: "The Jupyter Stacks spark image"
+      kubespawner_override:
+        image: jupyter/all-spark-notebook:2343e33dec46
+auth:
+  type: azuread
+  admin:
+    access: true
+    users:
+      - akurbanovas@albany.edu
+      - kurbanovas, arnoldas
+  azuread:
+    clientId: ""
+    clientSecret: ""
+    tenantId: ""
+    callbackUrl: "https://hulk.asrc.albany.edu/hub/oauth_callback"
