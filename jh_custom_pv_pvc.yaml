@@ -1,0 +1,38 @@
+#to access data that already exists need custom pv and claim to match uid
+#emacs pv-vol.yaml
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pvc-7ad61a22-5ba4-4ff8-b24d-dfd23ec1f2ab
+  namespace: jhub
+  labels:
+    type: local
+spec:
+  storageClassName: nfs-client
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/raid/arnold"
+
+#kubectl apply -f pv-vol.yaml
+
+#next make the claim
+#emacs pv-claim.yaml
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claim-kurbanovas-2c-20arnoldas
+  namespace: jhub
+spec:
+  storageClassName: nfs-client
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+
+#kubectl apply -f pv-claim.yaml
