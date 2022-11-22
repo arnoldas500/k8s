@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: crontab-cs
+  labels:
+    app: crontab-cs
+spec:
+  schedule: "*/5 * * * *"            ## Defined schedule using the *nix style cron syntax
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: crontab-cs
+        spec:
+          containers:
+          - name: crontab-cs
+            image:  akurbanovas/cron_cs:0.3
+            volumeMounts:
+            - name: dcflash-storage-cs
+              mountPath: /home/csutter
+            - name: dcflash-data
+              mountPath: /home/csutter/NYSM
+            command: ["/bin/sh"]
+            args: ["-c", "/opt/conda/bin/python /home/csutter/cron/fetch.py"]
+          volumes:
+          - name: dcflash-storage-cs
+            hostPath:
+              path: /rdma/flash/hulk/raid/csutter
+          - name: dcflash-data
+            hostPath:
+              path: /rdma/flash/hulk/raid/NYSM  
+          restartPolicy: OnFailure    ##  Restart Policy in case container failed
+

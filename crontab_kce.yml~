@@ -1,0 +1,29 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: crontab-kce
+  labels:
+    app: crontab-kce
+spec:
+  schedule: "5 * * * *"            ## Defined schedule using the *nix style cron syntax
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: crontab-kce
+        spec:
+          containers:
+          - name: crontab-kce
+            image:  akurbanovas/nick_kce:latest
+            volumeMounts:
+            - name: xcitedb-storage
+              mountPath: /home/xcite_team
+            command: ["/bin/sh"]
+            args: ["-c", "/home/xcite_team/kce/getkce_v2.csh"]
+          volumes:
+          - name: xcitedb-storage
+            hostPath:
+              path: /rdma/xcitedb/KCE  
+          restartPolicy: OnFailure    ##  Restart Policy in case container failed
+

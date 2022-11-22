@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edd-ks
+  labels:
+    app: edd-ks
+spec:
+#  nodeName: lambda
+  selector:
+    matchLabels:
+      app: edd-ks
+  template:
+    metadata:
+      labels:
+        app: edd-ks
+    spec:
+      containers:
+        - name: edd-ks
+          image: akurbanovas/kara_gpu:v0.3
+          volumeMounts:
+          - name: dcflash-storage-edd
+            mountPath: /home
+          - name: dcflash-data
+            mountPath: /home/ksulia/NYSM
+          command: ["/bin/sh"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8880 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX} /home/ksulia"]
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+          ports:
+            - containerPort: 8880
+      volumes:
+      - name: dcflash-storage-edd
+        hostPath:
+          path: /rdma/flash/hulk/raid/edd
+      - name: dcflash-data
+        hostPath:
+          path: /rdma/flash/hulk/raid/NYSM
+
+---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: cron-lg
+#   labels:
+#     app: cron-lg
+# spec:
+#   selector:
+#     app: cron-lg
+#   type: NodePort
+#   ports:
+#     - targetPort: 8888
+#       nodePort: 30008
+#       port: 8888
+#       name: http
+#       protocol: TCP
