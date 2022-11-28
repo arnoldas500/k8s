@@ -1,0 +1,18 @@
+apiVersion: rbacmanager.reactiveops.io/v1beta1
+kind: RBACDefinition
+metadata:
+  name: vanessa-access
+rbacBindings:
+  - name: vanessa
+    subjects:
+      - kind: User
+        name: vanessa
+    roleBindings:
+      - namespace: vanessa
+        clusterRole: edit
+      - namespace: default
+        clusterRole: view
+      - namespace: ai2es
+        clusterRole: edit
+      - namespace: xcite
+        clusterRole: view

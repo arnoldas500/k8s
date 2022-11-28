@@ -1,0 +1,11 @@
+apiVersion: rbacmanager.reactiveops.io/v1beta1
+kind: RBACDefinition
+metadata:
+  name: ksulia-access
+rbacBindings:
+  - name: ksulia
+    subjects:
+      - kind: User
+        name: ksulia
+    clusterRoleBindings:
+      - clusterRole: cluster-admin
