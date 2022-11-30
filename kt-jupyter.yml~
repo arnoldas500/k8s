@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kt-jl
+  labels:
+    app: kt-jl
+spec:
+#  nodeName: lambda
+  selector:
+    matchLabels:
+      app: kt-jl
+  template:
+    metadata:
+      labels:
+        app: kt-jl
+    spec:
+      containers:
+        - name: kt-jl
+          image:  akurbanovas/cron_lg:0.4
+          volumeMounts:
+          - name: a100
+            mountPath: /home/ktyle
+          command: ["/bin/sh"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.password='argon2:$argon2id$v=19$m=10240,t=10,p=8$GE0ZD1SC1wEXxI597Nh9ag$IIknh/ab/p7/sAHpHC1N/JH22ap66ONx8/6R9ZGWvME' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX} /home/ktyle"]
+          resources:
+            limits:
+              nvidia.com/gpu: 2
+          ports:
+            - containerPort: 8888
+            - containerPort: 8686
+            - containerPort: 8787
+      volumes:
+      - name: a100
+        hostPath:
+          path: /raid/ktyle
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kt-jl
+  labels:
+    app: kt-jl
+spec:
+  selector:
+    app: kt-jl
+  type: NodePort
+  ports:
+    - targetPort: 8888
+      nodePort: 30088
+      port: 8888
+      name: http-jupyter
+      protocol: TCP
+    - targetPort: 8686
+      nodePort: 30086
+      port: 8686
+      name: http-kt-1
+      protocol: TCP
+    - targetPort: 8787
+      nodePort: 30087
+      port: 8787
+      name: http-kt-2
+      protocol: TCP

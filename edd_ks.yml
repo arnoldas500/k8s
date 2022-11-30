@@ -16,14 +16,14 @@ spec:
     spec:
       containers:
         - name: edd-ks
-          image: akurbanovas/kara_gpu:v0.3
+          image: tverous/pytorch-notebook:latest
           volumeMounts:
           - name: dcflash-storage-edd
             mountPath: /home
           - name: dcflash-data
             mountPath: /home/ksulia/NYSM
           command: ["/bin/sh"]
-          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8880 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX} /home/ksulia"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --NotebookApp.password='' --allow-root --port=8880 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX} /home/ksulia"]
           resources:
             limits:
               nvidia.com/gpu: 1
