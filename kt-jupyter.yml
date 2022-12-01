@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: kt-jl
-          image:  ktyle/rapidsai_hvplot:2022.11.0
+          image:  ktyle/rapids_hvplot:2022.12.0
           volumeMounts:
           - name: a100
             mountPath: /home/ktyle
