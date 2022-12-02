@@ -21,7 +21,7 @@ spec:
           - name: a100
             mountPath: /home/ktyle
           command: ["/bin/sh"]
-          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.password='argon2:$argon2id$v=19$m=10240,t=10,p=8$GE0ZD1SC1wEXxI597Nh9ag$IIknh/ab/p7/sAHpHC1N/JH22ap66ONx8/6R9ZGWvME' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX} /home/ktyle"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.password='argon2:$argon2id$v=19$m=10240,t=10,p=8$GE0ZD1SC1wEXxI597Nh9ag$IIknh/ab/p7/sAHpHC1N/JH22ap66ONx8/6R9ZGWvME' --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/ktyle /home/ktyle"]
           resources:
             limits:
               nvidia.com/gpu: 2
