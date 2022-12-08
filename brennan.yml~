@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emily-jl
+  labels:
+    app: emily-jl
+spec:
+#  nodeName: lambda
+  selector:
+    matchLabels:
+      app: emily-jl
+  template:
+    metadata:
+      labels:
+        app: emily-jl
+    spec:
+      containers:
+        - name: emily-jl
+          image: akurbanovas/coe:brennan
+          volumeMounts:
+          - name: hulk
+            mountPath: /home/coe
+          command: ["/bin/sh"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/emily /home/ktyle"]
+#          resources:
+#            limits:
+#              nvidia.com/gpu: 2
+          ports:
+            - containerPort: 8888
+#            - containerPort: 8686
+#            - containerPort: 8787
+      volumes:
+      - name: hulk
+        hostPath:
+          path: /rdma/hulk/coe
+
+---
