@@ -20,6 +20,8 @@ spec:
           volumeMounts:
           - name: hulk
             mountPath: /home/coe
+          - name: cifs
+            mountPath: /home/coe/Nick
           command: ["/bin/sh"]
           args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/brennan /home/coe"]
 #          resources:
@@ -33,5 +35,8 @@ spec:
       - name: hulk
         hostPath:
           path: /rdma/hulk/coe
+      - name: cifs
+        hostPath:
+          path: /cifs/coe
 
 ---
