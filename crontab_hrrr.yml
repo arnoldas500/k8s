@@ -1,10 +1,45 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: download-nam-00
+  name: download-hrrr-00
   namespace: arnoldas
   labels:
-    app: download-nam-00
+    app: download-hrrr-00
+spec:
+  schedule: "0 1 * * *"            ## Defined schedule using the *nix style cron syntax
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: download-hrrr-00
+        spec:
+          containers:
+          - name: download-hrrr-00
+            image:  akurbanovas/cron_lg:0.4
+            volumeMounts:
+            - name: dcflash-storage-lg
+              mountPath: /home/lgaudet
+            - name: dcflash-data
+              mountPath: /home/lgaudet/model-data
+            command: ["/bin/bash"]
+            args: ["-c", "/opt/conda/envs/data_pipeline/bin/python /home/lgaudet/AI2ES/Notebooks/single_file_pipeline/s3_download_pipeline.py -m 'hrrr' -p 'wrfsfc' -d $(date +%Y%m%d) -i '00'"]
+          volumes:
+          - name: dcflash-storage-lg
+            hostPath:
+              path: /rdma/flash/hulk/raid/lgaudet
+          - name: dcflash-data
+            hostPath:
+              path: /rdma/flash/AI2ES/data
+          restartPolicy: OnFailure    ##  Restart Policy in case container failed
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: concat-hrrr-00
+  namespace: arnoldas
+  labels:
+    app: concat-hrrr-00
 spec:
   schedule: "30 1 * * *"            ## Defined schedule using the *nix style cron syntax
   jobTemplate:
@@ -12,10 +47,10 @@ spec:
       template:
         metadata:
           labels:
-            app: download-nam-00
+            app: concat-hrrr-00
         spec:
           containers:
-          - name: download-nam-00
+          - name: concat-hrrr-00
             image:  akurbanovas/cron_lg:0.4
             volumeMounts:
             - name: dcflash-storage-lg
@@ -23,7 +58,7 @@ spec:
             - name: dcflash-data
               mountPath: /home/lgaudet/model-data
             command: ["/bin/bash"]
-            args: ["-c", "/opt/conda/envs/data_pipeline/bin/python /home/lgaudet/AI2ES/Notebooks/single_file_pipeline/s3_download_pipeline.py -m 'nam' -p 'awphys' -d $(date +%Y%m%d) -i '00'"]
+            args: ["-c", "/opt/conda/envs/data_pipeline/bin/python /home/lgaudet/AI2ES/Notebooks/single_file_pipeline/concat_files_fix_precip.py -m 'hrrr' -p 'wrfsfc' -d $(date +%Y%m%d) -i '00'"]
           volumes:
           - name: dcflash-storage-lg
             hostPath:
@@ -36,21 +71,21 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: concat-nam-00
+  name: download-hrrr-12
   namespace: arnoldas
   labels:
-    app: concat-nam-00
+    app: download-hrrr-12
 spec:
-  schedule: "30 2 * * *"            ## Defined schedule using the *nix style cron syntax
+  schedule: "0 13 * * *"            ## Defined schedule using the *nix style cron syntax
   jobTemplate:
     spec:
       template:
         metadata:
           labels:
-            app: concat-nam-00
+            app: download-hrrr-12
         spec:
           containers:
-          - name: concat-nam-00
+          - name: download-hrrr-12
             image:  akurbanovas/cron_lg:0.4
             volumeMounts:
             - name: dcflash-storage-lg
@@ -58,7 +93,7 @@ spec:
             - name: dcflash-data
               mountPath: /home/lgaudet/model-data
             command: ["/bin/bash"]
-            args: ["-c", "/opt/conda/envs/data_pipeline/bin/python /home/lgaudet/AI2ES/Notebooks/single_file_pipeline/concat_files_fix_precip.py -m 'nam' -p 'awphys' -d $(date +%Y%m%d) -i '00'"]
+            args: ["-c", "/opt/conda/envs/data_pipeline/bin/python /home/lgaudet/AI2ES/Notebooks/single_file_pipeline/s3_download_pipeline.py -m 'hrrr' -p 'wrfsfc' -d $(date +%Y%m%d) -i '12'"]
           volumes:
           - name: dcflash-storage-lg
             hostPath:
@@ -71,10 +106,10 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: download-nam-12
+  name: concat-hrrr-12
   namespace: arnoldas
   labels:
-    app: download-nam-12
+    app: concat-hrrr-12
 spec:
   schedule: "30 13 * * *"            ## Defined schedule using the *nix style cron syntax
   jobTemplate:
@@ -82,10 +117,10 @@ spec:
       template:
         metadata:
           labels:
-            app: download-nam-12
+            app: concat-hrrr-12
         spec:
           containers:
-          - name: download-nam-12
+          - name: concat-hrrr-12
             image:  akurbanovas/cron_lg:0.4
             volumeMounts:
             - name: dcflash-storage-lg
@@ -93,42 +128,7 @@ spec:
             - name: dcflash-data
               mountPath: /home/lgaudet/model-data
             command: ["/bin/bash"]
-            args: ["-c", "/opt/conda/envs/data_pipeline/bin/python /home/lgaudet/AI2ES/Notebooks/single_file_pipeline/s3_download_pipeline.py -m 'nam' -p 'awphys' -d $(date +%Y%m%d) -i '12'"]
-          volumes:
-          - name: dcflash-storage-lg
-            hostPath:
-              path: /rdma/flash/hulk/raid/lgaudet
-          - name: dcflash-data
-            hostPath:
-              path: /rdma/flash/AI2ES/data
-          restartPolicy: OnFailure    ##  Restart Policy in case container failed
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: concat-nam-12
-  namespace: arnoldas
-  labels:
-    app: concat-nam-12
-spec:
-  schedule: "30 14 * * *"            ## Defined schedule using the *nix style cron syntax
-  jobTemplate:
-    spec:
-      template:
-        metadata:
-          labels:
-            app: concat-nam-12
-        spec:
-          containers:
-          - name: concat-nam-12
-            image:  akurbanovas/cron_lg:0.4
-            volumeMounts:
-            - name: dcflash-storage-lg
-              mountPath: /home/lgaudet
-            - name: dcflash-data
-              mountPath: /home/lgaudet/model-data
-            command: ["/bin/bash"]
-            args: ["-c", "/opt/conda/envs/data_pipeline/bin/python /home/lgaudet/AI2ES/Notebooks/single_file_pipeline/concat_files_fix_precip.py -m 'nam' -p 'awphys' -d $(date +%Y%m%d) -i '12'"]
+            args: ["-c", "/opt/conda/envs/data_pipeline/bin/python /home/lgaudet/AI2ES/Notebooks/single_file_pipeline/concat_files_fix_precip.py -m 'hrrr' -p 'wrfsfc' -d $(date +%Y%m%d) -i '12'"]
           volumes:
           - name: dcflash-storage-lg
             hostPath:
