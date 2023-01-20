@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-nick
+  namespace: arnoldas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-nick
+  template:
+    metadata:
+      labels:
+        app: web-nick
+    spec:
+      containers:
+      - name: web-nick
+        image: akurbanovas/static-nginx
+        volumeMounts:
+        - name: hulk
+          mountPath: /usr/share/nginx/html
+        ports:
+          - containerPort: 80
+      volumes:
+      - name: hulk
+        hostPath:
+          path: /rdma/hulk/coe/web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-nick
+  namespace: arnoldas
+spec:
+  type: NodePort
+  selector:
+    app: web-nick
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 31080
+    protocol: TCP
+  selector:
+    app: web-nick
