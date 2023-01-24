@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nick-kce-jl
+  labels:
+    app: nick-kce-jl
+spec:
+#  nodeName: lambda
+  selector:
+    matchLabels:
+      app: nick-kce-jl
+  template:
+    metadata:
+      labels:
+        app: nick-kce-jl
+    spec:
+      containers:
+        - name: nick-kce-jl
+          image: akurbanovas/nick_kce:hulk
+          volumeMounts:
+          - name: hulk
+            mountPath: /home/xcite_team
+          - name: nysm
+            mountPath: /home/xcite_team/NYSM
+          - name: ai2es
+            mountPath: /home/xcite_team/model_data
+          command: ["/bin/sh"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8887 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/nick-kce /home/xcite_team"]
+#          resources:
+#            limits:
+#              nvidia.com/gpu: 2
+          ports:
+            - containerPort: 8887
+#            - containerPort: 8686
+#            - containerPort: 8787
+      volumes:
+      - name: hulk
+        hostPath:
+          path: /rdma/hulk/edd
+      - name: nysm
+        hostPath:
+          path: /rdma/flash/hulk/raid/NYSM
+      - name: ai2es
+        hostPath:
+          path: /rdma/flash/AI2ES/data
+---

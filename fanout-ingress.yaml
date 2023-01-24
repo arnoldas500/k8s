@@ -6,7 +6,7 @@ metadata:
   annotations:
     ingress.kubernetes.io/rewrite-target: /
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-production
+#    cert-manager.io/cluster-issuer: letsencrypt-production
     nginx.ingress.kubernetes.io/proxy-body-size: 32m
 #    kubernetes.io/tls-acme: "true"
 #    nginx.ingress.kubernetes.io/auth-type: basic
@@ -43,9 +43,16 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: nginx
+            name: web-nick
             port:
-              number: 32075
+              number: 8080
+      - path: /nick-kce
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: nick-kce-jl
+            port:
+              number: 8887
   tls:
     - hosts:
       - xcitedb.asrc.albany.edu
