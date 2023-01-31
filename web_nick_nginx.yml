@@ -15,12 +15,12 @@ spec:
     spec:
       containers:
       - name: web-nick
-        image: akurbanovas/http-server
+        image: akurbanovas/http-server:php
         volumeMounts:
         - name: hulk
           mountPath: /home/coe/web
         command: ["/bin/bash"]
-        args: ["-c", "http-server /home/coe/web -p 8080 -o /coeweather --username coe --password coe"]
+        args: ["-c", "http-server /home/coe/web -p 8080 -o /coeweather "]
         ports:
           - containerPort: 8080
       volumes:

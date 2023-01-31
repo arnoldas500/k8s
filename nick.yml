@@ -18,6 +18,8 @@ spec:
         - name: nick-kce-jl
           image: akurbanovas/nick_kce:hulk
           volumeMounts:
+          - name: coe
+            mountPath: /home/xcite_team/coe
           - name: hulk
             mountPath: /home/xcite_team
           - name: nysm
@@ -34,6 +36,9 @@ spec:
 #            - containerPort: 8686
 #            - containerPort: 8787
       volumes:
+      - name: coe
+        hostPath:
+          path: /rdma/hulk/coe
       - name: hulk
         hostPath:
           path: /rdma/hulk/edd
