@@ -6,7 +6,7 @@ metadata:
   labels:
     app: download-nam-00
 spec:
-  schedule: "30 1 * * *"            ## Defined schedule using the *nix style cron syntax
+  schedule: "0 */6 * * *"            ## Defined schedule using the *nix style cron syntax
   jobTemplate:
     spec:
       template:
@@ -41,7 +41,7 @@ metadata:
   labels:
     app: concat-nam-00
 spec:
-  schedule: "30 2 * * *"            ## Defined schedule using the *nix style cron syntax
+  schedule: "59 */6 * * *"            ## Defined schedule using the *nix style cron syntax
   jobTemplate:
     spec:
       template:
@@ -76,7 +76,7 @@ metadata:
   labels:
     app: download-nam-12
 spec:
-  schedule: "30 13 * * *"            ## Defined schedule using the *nix style cron syntax
+  schedule: "0 */3 * * *"            ## Defined schedule using the *nix style cron syntax
   jobTemplate:
     spec:
       template:
@@ -111,7 +111,7 @@ metadata:
   labels:
     app: concat-nam-12
 spec:
-  schedule: "30 14 * * *"            ## Defined schedule using the *nix style cron syntax
+  schedule: "59 */3 * * *"            ## Defined schedule using the *nix style cron syntax
   jobTemplate:
     spec:
       template:
