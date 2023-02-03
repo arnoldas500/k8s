@@ -26,7 +26,7 @@ spec:
       volumes:
       - name: hulk
         hostPath:
-          path: /rdma/hulk/coe/web/coeweather/dhses
+          path: /rdma/hulk/coe/web/coeweather
 ---
 #apiVersion: v1
 #kind: Service

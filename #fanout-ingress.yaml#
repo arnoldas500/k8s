@@ -39,13 +39,13 @@ spec:
             name: brennan-jl
             port:
               number: 8888
-      - path: /coeweather
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: web-nick
-            port:
-              number: 8080
+#      - path: /dhses
+#        pathType: ImplementationSpecific
+#        backend:
+#          service:
+#            name: web-nick-php
+#            port:
+              number: 80
       - path: /nick-kce
         pathType: ImplementationSpecific
         backend:
@@ -53,13 +53,13 @@ spec:
             name: nick-kce-jl
             port:
               number: 8887
-      - path: /coeweather/dhses
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: web-nick-php
-            port:
-              number: 80
+#      - path: /coeweather/dhses
+#        pathType: ImplementationSpecific
+#        backend:
+#          service:
+#            name: web-nick
+#            port:
+#              number: 80
   tls:
     - hosts:
       - xcitedb.asrc.albany.edu
