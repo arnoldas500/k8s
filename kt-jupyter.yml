@@ -33,7 +33,7 @@ spec:
       volumes:
       - name: a100
         hostPath:
-          path: /raid/ktyle
+          path: /rdma/dgx-a100/ktyle
 
 ---
 apiVersion: v1

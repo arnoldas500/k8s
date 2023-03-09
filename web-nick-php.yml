@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
       - name: web-nick-php
-        image: php:8.0-apache
+        #image: php:8.0-apache
+        image: akurbanovas/web-nick-php
         volumeMounts:
         - name: hulk
           mountPath: /var/www/html
@@ -26,7 +27,7 @@ spec:
       volumes:
       - name: hulk
         hostPath:
-          path: /rdma/hulk/coe/web/coeweather
+          path: /rdma/hulk/coe/web
 ---
 #apiVersion: v1
 #kind: Service
