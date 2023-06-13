@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: will-jl
+  labels:
+    app: will-jl
+  namespace: arnoldas
+spec:
+#  nodeName: lambda
+  selector:
+    matchLabels:
+      app: will-jl
+  template:
+    metadata:
+      labels:
+        app: will-jl
+    spec:
+      containers:
+        - name: brennan-jl
+          image: akurbanovas/coe:brennan_1.0
+          volumeMounts:
+          - name: hulk
+            mountPath: /home/coe
+          - name: cifs
+            mountPath: /home/coe/Nick
+          - name: chge
+            mountPath: /home/coe/chge
+          command: ["/bin/sh"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/will /home/coe"]
+          imagePullPolicy: Always
+#          resources:
+#            limits:
+#              nvidia.com/gpu: 1
+          ports:
+            - containerPort: 8888
+#            - containerPort: 8686
+#            - containerPort: 8787
+      volumes:
+      - name: hulk
+        hostPath:
+          path: /rdma/hulk/coe
+      - name: cifs
+        hostPath:
+          path: /cifs/coe
+      - name: chge
+        hostPath:
+          path: /rdma/xcitedb/edd/CHGE/outage_uploads
+
+---
