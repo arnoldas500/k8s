@@ -14,14 +14,19 @@ spec:
       labels:
         app: cron-lg
     spec:
+      securityContext:
+        runAsUser: 22079
+        runAsGroup: 22082
       containers:
         - name: cron-lg
-          image:  akurbanovas/cron_lg:0.4
+          image:  akurbanovas/cron_lg:0.5
           volumeMounts:
           - name: dcflash-storage-lg
             mountPath: /home/lgaudet
           - name: dcflash-data
             mountPath: /home/lgaudet/model-data
+          - name: home
+            mountPath: /home/ksulia
           command: ["/bin/sh"]
           args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX} /home/lgaudet"]
 #          resources:
@@ -36,6 +41,9 @@ spec:
       - name: dcflash-data
         hostPath:
           path: /rdma/flash/AI2ES/data
+      - name: home
+        hostPath:
+          path:/home/ksulia
 
 ---
 # apiVersion: v1
