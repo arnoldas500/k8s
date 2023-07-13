@@ -1,34 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cron-lg
+  name: cron-ae
   labels:
-    app: cron-lg
+    app: cron-ae
 spec:
 #  nodeName: lambda
   selector:
     matchLabels:
-      app: cron-lg
+      app: cron-ae
   template:
     metadata:
       labels:
-        app: cron-lg
+        app: cron-ae
     spec:
       securityContext:
-        runAsUser: 22079
+        runAsUser: 22085
         runAsGroup: 22082
       containers:
-        - name: cron-lg
-          image:  akurbanovas/cron_lg:0.5
+        - name: cron-ae
+          image:  akurbanovas/cron_lg:aevans
           volumeMounts:
           - name: dcflash-storage-lg
             mountPath: /home/lgaudet
           - name: dcflash-data
-            mountPath: /home/lgaudet/model-data
+            mountPath: /home/aevans/model-data
           - name: home
-            mountPath: /home/ksulia
+            mountPath: /home/aevans
           command: ["/bin/sh"]
-          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX} /home/lgaudet"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX} /home/aevans"]
 #          resources:
 #            limits:
 #              nvidia.com/gpu: 1
@@ -43,7 +43,7 @@ spec:
           path: /rdma/flash/AI2ES/data
       - name: home
         hostPath:
-          path: /home/ksulia
+          path: /home/aevans
 ---
 # apiVersion: v1
 # kind: Service

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shiny
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: shiny
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: shiny
+    spec:
+      volumes:
+      - name: hulk
+        hostPath:
+          path: /rdma/hulk/coe/Will/ShinyApps/
+      - name: varlog
+        hostPath:
+          path: /rdma/hulk/coe/Will/shiny-logs/
+      containers:
+      - name: shiny-your-app
+        image: akurbanovas/shiny:will
+        ports:
+        - containerPort: 3838
+        volumeMounts:
+        - name: varlog
+          mountPath: /var/log/shiny-server/
+        - name: hulk
+          mountPath: /srv/shiny-server/ShinyApps/

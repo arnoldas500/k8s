@@ -60,6 +60,13 @@ spec:
             name: web-nick-php
             port:
               number: 80
+      - path: /ShinyApps
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: shiny
+            port:
+              number: 3838
   tls:
     - hosts:
       - xcitedb.asrc.albany.edu
