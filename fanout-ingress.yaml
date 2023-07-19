@@ -67,6 +67,13 @@ spec:
             name: shiny
             port:
               number: 3838
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: keycloak
+            port:
+              number: 8080
   tls:
     - hosts:
       - xcitedb.asrc.albany.edu
