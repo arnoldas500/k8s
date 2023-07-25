@@ -46,20 +46,21 @@ monitoring:
 
 # Uncomment one of the below options for authentication
 
-active_directory:
-  base: "dc=xcitedb,dc=asrc,dc=albany,dc=edu"
-  host: "169.226.68.133"
-  port: "636"
-  bind_dn: "cn=admin,dc=xcitedb,dc=asrc,dc=albany,dc=edu"
-  con_type: ldap
-  srv_dns: "false"
+#active_directory:
+#  base: "ou=People,dc=xcitedb,dc=asrc,dc=albany,dc=edu"
+#  host: "169.226.68.133"
+#  port: "636"
+#  port: 389
+#  bind_dn: "cn=admin,dc=xcitedb,dc=asrc,dc=albany,dc=edu"
+#  con_type: ldap
+#  srv_dns: "false"
 
 #oidc:
-#  client_id: xxxxxx
-#  issuer: https://xxxxxx.okta.com/
+#  client_id: kube-oidc-proxy
+#  issuer: https://xcitedb.asrc.albany.edu/realms/xCITE/
 #  user_in_idtoken: false
 #  domain: ""
-#  scopes: openid email profile groups
+#  scopes: openid email profile
 #  claims:
 #    sub: sub
 #    email: email
@@ -68,9 +69,9 @@ active_directory:
 #    display_name: name
 #    groups: groups
 
-#github:
-#  client_id: d85d77c55a08c9bcbb15
-#  teams: TremoloSecurity/
+github:
+  client_id: 627607223b753d176151
+  teams: xcite-k8s/
 
 #saml:
 #  idp_url: "https://portal.apps.tremolo.io/idp-test/metadata/dfbe4040-cd32-470e-a9b6-809c8f857c40"

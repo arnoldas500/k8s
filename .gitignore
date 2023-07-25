@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#k8s secrets
+donotcopy.txt
+donotcopy.txt~
+github_key.txt

@@ -1,0 +1,18 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: volume-access
+rules:
+  - apiGroups:
+        - apps
+        - autoscaling
+    resources:
+      - pods
+      - deployments
+      - ingress
+      - jobs
+      - namespaces
+      - nodes
+      - serviceaccounts
+      - services
+    verbs: ["get", "list", "watch", "create", "update"]
