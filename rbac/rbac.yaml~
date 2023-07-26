@@ -1,0 +1,33 @@
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: coe-role
+  namespace: arnoldas
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: coe-rolebinding
+  namespace: arnoldas
+subjects:
+- kind: Group
+  name: xcite-k8s/coe
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: coe-role
+  apiGroup: rbac.authorization.k8s.io

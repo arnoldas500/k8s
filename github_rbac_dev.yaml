@@ -1,0 +1,13 @@
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: coe
+  namespace: coe
+subjects:
+- kind: Group
+  name: xcite-k8s/coe
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: coe
+  apiGroup: rbac.authorization.k8s.io
