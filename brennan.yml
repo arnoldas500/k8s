@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: brennan-jl
-          image: akurbanovas/coe:brennan_1.0
+          image: akurbanovas/coe:brennan_v2
           volumeMounts:
           - name: hulk
             mountPath: /home/coe
