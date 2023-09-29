@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meso-web
+  labels:
+    app: meso-web
+  namespace: arnoldas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meso-web
+  template:
+    metadata:
+      labels:
+        app: meso-web  
+    spec:
+      containers:
+        - name: meso-web
+          image: akurbanovas/meso_web:v2
+          ports:
+            - containerPort: 3000
+          #command: ["/bin/sh"]
+          #args: ["-c", "npm start -p 3000"]

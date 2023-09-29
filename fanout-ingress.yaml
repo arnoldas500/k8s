@@ -68,12 +68,19 @@ spec:
             port:
               number: 3838
       - path: /
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
-            name: keycloak
+            name: meso-web
             port:
-              number: 8080
+              number: 3000
+#      - path: /
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: keycloak
+#            port:
+#              number: 8080
   tls:
     - hosts:
       - xcitedb.asrc.albany.edu
