@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: fanout-ingress
+  name: ingress
   namespace: arnoldas
   annotations:
 #    ingress.kubernetes.io/rewrite-target: /
@@ -15,7 +15,7 @@ metadata:
 #    ingress.kubernetes.io/rewrite-target
 spec:
   rules:
-  - host: xcitedb.asrc.albany.edu
+  - host: test.asrc.albany.edu
     http:
       paths:
       - path: /coeweather
@@ -27,6 +27,6 @@ spec:
               number: 80
   tls:
     - hosts:
-      - xcitedb.asrc.albany.edu
+      - test.asrc.albany.edu
       secretName: letsencrypt-staging
 ---

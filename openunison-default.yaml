@@ -1,9 +1,9 @@
 network:
-  openunison_host: "k8s.app.169.226.68.133.nip.io"
-  dashboard_host: "k8sdb.app.169.226.68.133.nip.io"
-  api_server_host: "k8sapi.app.169.226.68.133.nip.io"
+  openunison_host: "k8s.app.169.226.68.141.nip.io"
+  dashboard_host: "k8sdb.app.169.226.68.141.nip.io"
+  api_server_host: "k8sapi.app.169.226.68.141.nip.io"
   session_inactivity_timeout_seconds: 900
-  k8s_url: https://169.226.68.133:6443
+  k8s_url: https://169.226.68.141:6443
   force_redirect_to_tls: false
   createIngressCertificate: true
   ingress_type: nginx
@@ -70,7 +70,7 @@ monitoring:
 #    groups: groups
 
 github:
-  client_id: 627607223b753d176151
+  client_id: a65f8728b59d356e2061
   teams: xcite-k8s/
 
 #saml:
