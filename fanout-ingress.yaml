@@ -15,7 +15,7 @@ metadata:
 #    ingress.kubernetes.io/rewrite-target
 spec:
   rules:
-  - host: xcitedb.asrc.albany.edu
+  - host: appsvr.asrc.albany.edu
     http:
       paths:
       - path: /ktyle
@@ -83,6 +83,6 @@ spec:
 #              number: 8080
   tls:
     - hosts:
-      - xcitedb.asrc.albany.edu
+      - appsvr.asrc.albany.edu
       secretName: letsencrypt-production
 ---
