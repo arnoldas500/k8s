@@ -15,7 +15,7 @@ metadata:
 #    ingress.kubernetes.io/rewrite-target
 spec:
   rules:
-  - host: xcitedb.asrc.albany.edu
+  - host: appsvr.asrc.albany.edu
     http:
       paths:
       - path: /ktyle
@@ -68,14 +68,21 @@ spec:
             port:
               number: 3838
       - path: /
-        pathType: Prefix
+        pathType: ImplementationSpecific
         backend:
           service:
-            name: keycloak
+            name: meso-web
             port:
-              number: 8080
+              number: 3000
+#      - path: /
+#        pathType: Prefix
+#        backend:
+#          service:
+#            name: keycloak
+#            port:
+#              number: 8080
   tls:
     - hosts:
-      - xcitedb.asrc.albany.edu
+      - appsvr.asrc.albany.edu
       secretName: letsencrypt-production
 ---
