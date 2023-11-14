@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: emily-jl
+  name: deepak-jl
   labels:
-    app: emily-jl
+    app: deepak-jl
 spec:
 #  nodeName: lambda
   selector:
     matchLabels:
-      app: emily-jl
+      app: deepak-jl
   template:
     metadata:
       labels:
-        app: emily-jl
+        app: deepak-jl
     spec:
       containers:
-        - name: emily-jl
+        - name: deepak-jl
           image: akurbanovas/coe:emily
           volumeMounts:
           - name: hulk
@@ -23,7 +23,7 @@ spec:
           - name: cifs
             mountPath: /home/coe/Nick
           command: ["/bin/sh"]
-          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/emily /home/coe"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/deepak /home/coe"]
           imagePullPolicy: Always
 #          resources:
 #            limits:

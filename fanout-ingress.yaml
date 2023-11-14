@@ -25,11 +25,11 @@ spec:
             name: kt-jl
             port:
               number: 8888
-      - path: /emily
+      - path: /deepak
         pathType: ImplementationSpecific
         backend:
           service:
-            name: emily-jl
+            name: deepak-jl
             port:
               number: 8888
       - path: /brennan
