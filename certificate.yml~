@@ -1,0 +1,20 @@
+apiVersion: 
+kind: Certificate
+metadata:
+  name: tls-secret
+  namespace: default
+spec:
+  secretName: tls-secret
+  dnsNames: &http_rules
+    - xcite.asrc.albany.edu
+    - www.xcite.asrc.albany.edu
+    - dev.xcite.asrc.albany.edu
+    - admin.xcite.asrc.albany.edu
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains: *http_rules
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer

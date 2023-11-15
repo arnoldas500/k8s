@@ -3,14 +3,14 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 #kind: Issuer
 metadata:
-  name: letsencrypt-production
+  name: letsencrypt-test
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
     email: akurbanovas@albany.edu # ❗ Replace this with your email address
     privateKeySecretRef:
-      name: letsencrypt-production
+      name: letsencrypt-test
     solvers:
     - http01:
         ingress:
-          name: fanout-ingress
+          name: nginx-deployment

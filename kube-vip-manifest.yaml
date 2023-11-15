@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubevip
+  namespace: kube-system
+  uid: d4dfcad3-0311-4137-94f1-9a8c541ce089
+  resourceVersion: '6742479'
+  creationTimestamp: '2023-11-09T20:20:55Z'
+  labels:
+    k8slens-edit-resource-version: v1
+  managedFields:
+    - manager: kubectl-create
+      operation: Update
+      apiVersion: v1
+      time: '2023-11-09T20:20:55Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:data: {}
+    - manager: node-fetch
+      operation: Update
+      apiVersion: v1
+      time: '2023-11-09T20:25:43Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:data:
+          f:range-global: {}
+        f:metadata:
+          f:labels:
+            .: {}
+            f:k8slens-edit-resource-version: {}
+  selfLink: /api/v1/namespaces/kube-system/configmaps/kubevip
+data:
+  range-global: 169.226.68.164-169.226.68.180

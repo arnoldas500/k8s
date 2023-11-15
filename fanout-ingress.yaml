@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: fanout-ingress
-  namespace: arnoldas
+#  namespace: arnoldas
   annotations:
     ingress.kubernetes.io/rewrite-target: /
     kubernetes.io/ingress.class: nginx
@@ -15,7 +15,7 @@ metadata:
 #    ingress.kubernetes.io/rewrite-target
 spec:
   rules:
-  - host: appsvr.asrc.albany.edu
+  - host: xcite.asrc.albany.edu
     http:
       paths:
       - path: /ktyle
@@ -83,6 +83,6 @@ spec:
 #              number: 8080
   tls:
     - hosts:
-      - appsvr.asrc.albany.edu
+      - xcite.asrc.albany.edu
       secretName: letsencrypt-production
 ---
