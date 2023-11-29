@@ -1,0 +1,16 @@
+# issuer-lets-encrypt-production.yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+#kind: Issuer
+metadata:
+  name: letsencrypt-prod-xcitedb
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: akurbanovas@albany.edu # ❗ Replace this with your email address
+    privateKeySecretRef:
+      name: letsencrypt-test
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
