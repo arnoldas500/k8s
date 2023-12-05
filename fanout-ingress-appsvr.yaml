@@ -1,14 +1,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-nick
+  name: fanout-ingress-appsvr
   namespace: arnoldas
   annotations:
-#    ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/rewrite-target: /
     kubernetes.io/ingress.class: nginx
-#    cert-manager.io/cluster-issuer: letsencrypt-production  
-#    nginx.ingress.kubernetes.io/proxy-body-size: 32m
+#    cert-manager.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/proxy-body-size: 32m
 #    kubernetes.io/tls-acme: "true"
 #    nginx.ingress.kubernetes.io/auth-type: basic
 #    nginx.ingress.kubernetes.io/auth-secret: basic-auth
@@ -16,18 +15,26 @@ metadata:
 #    ingress.kubernetes.io/rewrite-target
 spec:
   rules:
-  - host: dcflash.asrc.albany.edu
+  - host: appsvr.asrc.albany.edu
     http:
       paths:
+      - path: /coeweather
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: web-nick-php
+            port:
+              number: 80
       - path: /
         pathType: ImplementationSpecific
         backend:
           service:
-            name: web-nick-php-backup
+            name: meso-web
             port:
-              number: 80
-#  tls:
-#    - hosts:
-#      - dcflash.asrc.albany.edu
-#      secretName: letsencrypt-production
+              number: 3000
+
+  tls:
+    - hosts:
+      - appsvr.asrc.albany.edu
+      secretName: letsencrypt-production
 ---

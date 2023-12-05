@@ -3,7 +3,7 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 #kind: Issuer
 metadata:
-  name: letsencrypt-test
+  name: letsencrypt-prod-xcitedb
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
@@ -13,4 +13,4 @@ spec:
     solvers:
     - http01:
         ingress:
-          name: nginx-deployment
+          class: nginx
