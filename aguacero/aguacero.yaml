@@ -1,0 +1,141 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aguacero-web
+  labels:
+    app: aguacero-web
+  namespace: arnoldas
+spec:
+  selector:
+    matchLabels:
+      app: aguacero-web
+  template:
+    metadata:
+      labels:
+        app: aguacero-web
+    spec:
+      containers:
+        - name: aguacero-web
+          image: akurbanovas/aguacero-web:1.1
+          ports:
+            - containerPort: 4173
+          imagePullPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aguacero-web
+  labels:
+    app: aguacero-web
+  namespace: arnoldas
+spec:
+  selector:
+    app: aguacero-web
+  type: LoadBalancer
+  ports:
+    - targetPort: 4173
+      port: 4173
+      name: http
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aguacero-server
+  labels:
+    app: aguacero-server
+  namespace: arnoldas
+spec:
+  selector:
+    matchLabels:
+      app: aguacero-server
+  template:
+    metadata:
+      labels:
+        app: aguacero-server
+    spec:
+      containers:
+        - name: aguacero-server
+          image: akurbanovas/aguacero:server_v1
+          workingDir: /home/mbarletta
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: home
+            mountPath: /home/mbarletta
+          command: ["/bin/sh"] #["node"]
+          args: ["-c", "/usr/local/bin/node /home/mbarletta/Aguacero_source/server/server.js"]
+          ports:
+            - containerPort: 8080
+      volumes:
+      - name: home
+        hostPath:
+          path: /home/mbarletta
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aguacero-server-tcp
+  labels:
+    app: aguacero-server
+  namespace: arnoldas
+spec:
+  selector:
+    app: aguacero-server
+  type: NodePort
+  ports:
+    - name: http
+      targetPort: 8080
+      port: 8080
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aguacero-tile-server
+  labels:
+    app: aguacero-tile-server
+  namespace: arnoldas
+spec:
+  selector:
+    matchLabels:
+      app: aguacero-tile-server
+  template:
+    metadata:
+      labels:
+        app: aguacero-tile-server
+    spec:
+      containers:
+        - name: aguacero-tile-server
+          image: akurbanovas/aguacero:tile_server_v1
+          workingDir: /home/mbarletta
+          imagePullPolicy: Always
+          volumeMounts:
+          - name: home
+            mountPath: /home/mbarletta
+          command: ["/bin/sh"] #["node"]
+          args: ["-c", "/usr/local/bin/node /home/mbarletta/Aguacero_source/server/tile_server.js"]
+          ports:
+            - containerPort: 14
+      volumes:
+      - name: home
+        hostPath:
+          path: /home/mbarletta
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aguacero-tile-server-tcp
+  labels:
+    app: aguacero-tile-server
+  namespace: arnoldas
+spec:
+  selector:
+    app: aguacero-tile-server
+  type: NodePort
+  ports:
+    - name: http
+      targetPort: 14
+      port: 14
+      protocol: TCP

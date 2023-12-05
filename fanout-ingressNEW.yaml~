@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: fanout-ingress-dcflash
+  name: fanout-ingress-xcite
   namespace: arnoldas
   annotations:
     ingress.kubernetes.io/rewrite-target: /
@@ -15,7 +15,7 @@ metadata:
 #    ingress.kubernetes.io/rewrite-target
 spec:
   rules:
-  - host: dcflash.asrc.albany.edu
+  - host: xcite.asrc.albany.edu
     http:
       paths:
       - path: /ktyle
@@ -81,8 +81,8 @@ spec:
 #            name: keycloak
 #            port:
 #              number: 8080
-  tls:
-    - hosts:
-      - dcflash.asrc.albany.edu
-      secretName: letsencrypt-production
+#  tls:
+#    - hosts:
+#      - appsvr.asrc.albany.edu
+#      secretName: letsencrypt-production
 ---
