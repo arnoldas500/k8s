@@ -15,11 +15,11 @@ metadata:
 #    ingress.kubernetes.io/rewrite-target
 spec:
   rules:
-  - host: aguacerowx.com
+  - host: appsvr.asrc.albany.edu
     http:
       paths:
       - path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: aguacero-web
