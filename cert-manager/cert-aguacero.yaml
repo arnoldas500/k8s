@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: app-cert-aguacerowx
+spec:
+  secretName: secret-tls-aguacerowx
+  renewBefore: 240h
+  duration: 2160h
+  commonName: aguacerowx.com
+  dnsNames:
+  - aguacerowx.com
+  issuerRef:
+    name: letsencrypt-prod-xcitedb
+    kind: ClusterIssuer
