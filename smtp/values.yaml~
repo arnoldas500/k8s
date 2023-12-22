@@ -1,0 +1,13 @@
+persistence:
+  enabled: false
+
+config:
+  general:
+    TZ: "America/New_York"
+    #RELAYHOST: "qsmtp.its.albany.edu"
+    #myhostname: "xcitedb.asrc.albany.edu"
+    #ALLOWED_SENDER_DOMAINS: example.org
+    #FORCE_COLOR: "1"
+  postfix:
+    myhostname: "xcitedb.asrc.albany.edu"
+    RELAYHOST: "qsmtp.its.albany.edu"
