@@ -20,10 +20,19 @@ coder:
 
     # (Optional) For production deployments the access URL should be set.
     # If you're just trying Coder, access the dashboard via the service IP.
-#    - name: CODER_ACCESS_URL
-#      value: "https://dcflash.asrc.albany.edu"
+    - name: CODER_ACCESS_URL
+      value: "https://dcflash.asrc.albany.edu"
 
-#  tls:
-#    secretNames:
-#      - secret-tls-dcflash
+  tls:
+    secretNames:
+      - secret-tls-dcflash
 
+  ingress:
+    enable: true
+    className: "nginx"
+#    tls:
+#      enable: true
+#      - hosts:
+#        - dcflash.asrc.albany.edu
+#      secretNames:
+#        - secret-tls-dcflash
