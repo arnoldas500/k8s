@@ -1,14 +1,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: app-cert
+  name: coder-cert
 spec:
-  secretName: secret-tls
+  secretName: coder-tls
   renewBefore: 240h
   duration: 2160h
-  commonName: xcitelab.org
+  commonName: coder.xcitelab.org
   dnsNames:
-  - xcitelab.org
+  - coder.xcitelab.org
   issuerRef:
     name: letsencrypt-prod-xcitedb
     kind: ClusterIssuer

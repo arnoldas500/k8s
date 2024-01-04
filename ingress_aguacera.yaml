@@ -1,11 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  namespace: aguacero
   annotations:
-    kubectl.kubernetes.io/last-applied-configuration: >
-      {"apiVersion":"networking.k8s.io/v1","kind":"Ingress","metadata":{"annotations":{},"labels":{"app":"node-test","app.kubernetes.io/instance":"node-test-aguacero","appId":"2","chart":"node-test-4.18.1","envId":"3","release":"node-test-aguacero"},"name":"node-test-aguacero-ingress","namespace":"aguacero"},"spec":{"rules":[{"host":"xcitelab.org","http":{"paths":[{"backend":{"service":{"name":"node-test-aguacero-service","port":{"number":80}}},"path":"/mesoweb","pathType":"ImplementationSpecific"}]}}],"tls":[{"hosts":["xcitelab.org"],"secretName":"secret-tls"}]}}
-  creationTimestamp: 2023-12-13T17:30:16Z
-  generation: 1
+    kubernetes.io/ingress.class: nginx
   labels:
     app: node-test
     app.kubernetes.io/instance: node-test-aguacero
@@ -27,11 +25,9 @@ spec:
                 name: node-test-aguacero-service
                 port:
                   number: 80
-            path: /mesoweb
+            path: /
             pathType: ImplementationSpecific
   tls:
     - hosts:
-        - xcitelab.org
+        - xcitelab.org 
       secretName: secret-tls
-status:
-  loadBalancer: {}

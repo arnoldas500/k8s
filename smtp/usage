@@ -1,0 +1,1 @@
+helm upgrade --install --values=values.yaml --set service.nodeIP=169.226.68.133 mail bokysan/mail -n arnoldas

@@ -133,3 +133,5 @@ donotcopy.txt
 donotcopy.txt~
 github_key.txt
 ouctl
+
+tmp/
