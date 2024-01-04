@@ -1,14 +1,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: app-cert-devtron
+  name: app-cert-aguacerowx
 spec:
-  secretName: secret-devtron
+  secretName: secret-tls-aguacerowx
   renewBefore: 240h
   duration: 2160h
-  commonName: xcite-devtron.asrc.albany.edu
+  commonName: aguacerowx.com
   dnsNames:
-  - xcite-devtron.asrc.albany.edu
+  - aguacerowx.com
   issuerRef:
     name: letsencrypt-prod-xcitedb
     kind: ClusterIssuer

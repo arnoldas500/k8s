@@ -1,0 +1,174 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: code-server
+  namespace: ksulia
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod-xcitedb
+#    ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - xcitedb.asrc.albany.edu
+      secretName: letsencrypt-prod-xcitedb
+  rules:
+  - host: xcitedb.asrc.albany.edu
+    http:
+      paths:
+      - pathType: Prefix
+        path: /ksulia-server(/|$)(.*)
+        backend:
+          service:
+            name: code-server
+            port:
+              number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: code-server
+  namespace: ksulia
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: main
+  - port: 8888
+    targetPort: 8888
+    name: http
+    protocol: TCP
+  - port: 4000
+    targetPort: 4000
+    name: http-dash-1
+    protocol: TCP
+  - port: 3000
+    targetPort: 3000
+    name: http-dash-2
+    protocol: TCP
+  - port: 3005
+    targetPort: 3005
+    name: http-api-1
+    protocol: TCP
+  selector:
+    app: code-server
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: code-server
+  name: code-server
+  namespace: ksulia
+spec:
+  selector:
+    matchLabels:
+      app: code-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: code-server
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - appsvr
+                - dgx-a100
+                - hulk
+                - leela
+                - stellar
+      securityContext:
+        runAsUser: 22079
+        runAsGroup: 22079
+      containers:
+      - image: ksulia/code-server:v5 #codercom/code-server:latest
+        imagePullPolicy: Always
+        resources:
+            limits:
+              nvidia.com/gpu: 1
+        name: code-server
+        workingDir: /home/ksulia
+        volumeMounts:
+        - name: home
+          mountPath: /home/ksulia
+        - name: ul
+          mountPath: /home/ksulia/VOWELS/data/ul  
+        - name: gfs
+          mountPath: /home/ksulia/VOWELS/data/gfs
+        - name: etr 
+          mountPath: /home/ksulia/ETR/etr_predictions
+        - name: chge
+          mountPath: /home/ksulia/CHGE_OUTAGES
+        - name: edd
+          mountPath: /home/ksulia/edd
+        - name: nysm
+          mountPath: /home/ksulia/NYSM
+        - name: ai2es
+          mountPath: /home/ksulia/AI2ES
+        - name: aq
+          mountPath: /home/ksulia/AQ
+        - name: idea
+          mountPath: /home/ksulia/idea
+        - name: lidar
+          mountPath: /home/ksulia/lidar
+        - name: lulab
+          mountPath: /home/ksulia/lulab
+        - name: cpi
+          mountPath: /home/ksulia/COCPIT/cpi_data
+        ports:
+          - containerPort: 8888
+          - containerPort: 4000
+          - containerPort: 3000
+          - containerPort: 3005
+        env:
+        - name: PASSWORD
+          value: pNGS5hQJL6Tl
+      volumes:
+      - name: home
+        hostPath:
+          path: /home/ksulia
+      - name: ul
+        hostPath:
+          path: /rdma/xcitedb/VOWELS/data
+      - name: gfs
+        hostPath:
+          path: /rdma/xcitedb/VOWELS/gfs
+      - name: etr
+        hostPath:
+          path: /rdma/hulk/coe/web/coeweather/etr_predictions
+      - name: chge
+        hostPath:
+          path: /rdma/xcitedb/edd/CHGE/outage_uploads
+      - name: edd
+        hostPath:
+          path: /rdma/hulk/edd
+      - name: nysm
+        hostPath:
+          path: /rdma/dgx-a100/NYSM
+      - name: ai2es
+        hostPath:
+          path: /rdma/xcitedb/AI2ES
+      - name: aq
+        hostPath:
+          path: /rdma/xcitedb/AQ
+      - name: idea
+        hostPath:
+          path: /mnt/idea
+      - name: lidar
+        hostPath:
+          path: /cifs/xcitelab/mesonet/data
+      - name: lulab
+        hostPath:
+          path: /cifs/lulab
+      - name: cpi
+        hostPath: 
+          path: /home/vanessa/hulk/cocpit/cpi_data
+
