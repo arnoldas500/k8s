@@ -81,7 +81,7 @@ spec:
         runAsUser: 22106
         runAsGroup: 22105
       containers:
-      - image: codercom/code-server:4.19.1-ubuntu
+      - image: akurbanovas/code-server-vaalvarez:v1 #codercom/code-server:4.19.1-ubuntu
         imagePullPolicy: Always
         name: code-server
         workingDir: /home/vaalvarez

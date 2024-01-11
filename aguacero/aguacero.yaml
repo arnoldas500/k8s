@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: aguacero-web
-          image: akurbanovas/aguacero-web:1.1
+          image: akurbanovas/aguacero-web:9dc49b1f-8-52 #akurbanovas/aguacero-web:1.1
           ports:
             - containerPort: 4173
           imagePullPolicy: Always
@@ -37,6 +37,7 @@ spec:
       port: 4173
       name: http
       protocol: TCP
+#      ip: 10.233.2.223
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -62,15 +63,20 @@ spec:
           volumeMounts:
           - name: home
             mountPath: /home/mbarletta
+          - name: flash
+            mountPath: /home/mbarletta/aguacero
           command: ["/bin/sh"] #["node"]
           args: ["-c", "/usr/local/bin/node /home/mbarletta/Aguacero_source/server/server.js"]
           ports:
+            - containerPort: 8081
             - containerPort: 8080
       volumes:
       - name: home
         hostPath:
           path: /home/mbarletta
-
+      - name: flash
+        hostPath:
+          path: /rdma/flash/aguacero
 ---
 apiVersion: v1
 kind: Service
@@ -85,9 +91,10 @@ spec:
   type: NodePort
   ports:
     - name: http
-      targetPort: 8080
-      port: 8080
+      targetPort: 8081
+      port: 8081
       protocol: TCP
+      ip: 10.233.2.223
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -113,6 +120,8 @@ spec:
           volumeMounts:
           - name: home
             mountPath: /home/mbarletta
+          - name: flash
+            mountPath: /home/mbarletta/aguacero  
           command: ["/bin/sh"] #["node"]
           args: ["-c", "/usr/local/bin/node /home/mbarletta/Aguacero_source/server/tile_server.js"]
           ports:
@@ -121,6 +130,9 @@ spec:
       - name: home
         hostPath:
           path: /home/mbarletta
+      - name: flash
+        hostPath:
+          path: /rdma/flash/aguacero
 
 ---
 apiVersion: v1
@@ -139,3 +151,4 @@ spec:
       targetPort: 14
       port: 14
       protocol: TCP
+      ip: 10.233.8.249
