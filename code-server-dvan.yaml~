@@ -1,0 +1,107 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: code-server-vaalvarez
+  namespace: arnoldas
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+      - aguacerowx.com
+      secretName: secret-tls-aguacerowx
+  rules:
+  - host: aguacerowx.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: /vaalvarez/login(/|$)(.*) 
+        backend:
+          service:
+            name: code-server-vaalvarez
+            port:
+              number: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: code-server-vaalvarez
+  namespace: arnoldas
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: main
+  - port: 8081
+    targetPort: 8081
+    name: http
+    protocol: TCP
+  - port: 3000
+    targetPort: 3000
+    name: dash
+    protocol: TCP
+  - port: 14
+    targetPort: 14
+    name: api
+    protocol: TCP
+  selector:
+    app: code-server-vaalvarez
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: code-server-vaalvarez
+  name: code-server-vaalvarez
+  namespace: arnoldas
+spec:
+  selector:
+    matchLabels:
+      app: code-server-vaalvarez
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: code-server-vaalvarez
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - appsvr
+                - dgx-a100
+                - hulk
+      securityContext:
+        runAsUser: 22106
+        runAsGroup: 22105
+      containers:
+      - image: akurbanovas/code-server-vaalvarez:v1 #codercom/code-server:4.19.1-ubuntu
+        imagePullPolicy: Always
+        name: code-server
+        workingDir: /home/vaalvarez
+        volumeMounts:
+        - name: home
+          mountPath: /home/vaalvarez
+        - name: flash
+          mountPath: /home/vaalvarez/aguacero  
+        ports:
+          - containerPort: 8080
+          - containerPort: 8081
+          - containerPort: 3000
+          - containerPort: 14
+        env:
+        - name: PASSWORD
+          value: "*aguacero@asrc*"
+      volumes:
+      - name: home
+        hostPath:
+          path: /home/vaalvarez
+      - name: flash
+        hostPath:
+          path: /rdma/flash/aguacero
