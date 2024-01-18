@@ -9,14 +9,14 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-      - xcitedb.asrc.albany.edu
-      secretName: letsencrypt-prod-xcitedb
+      - xcitelab.org
+      secretName: secret-tls
   rules:
-  - host: xcitedb.asrc.albany.edu
+  - host: xcitelab.org
     http:
       paths:
       - pathType: Prefix
-        path: /dvan/login(/|$)(.*) 
+        path: / #(/|$)(.*) 
         backend:
           service:
             name: code-server-dvan
@@ -36,6 +36,14 @@ spec:
   - port: 3000
     targetPort: 3000
     name: dash
+    protocol: TCP
+  - port: 4000
+    targetPort: 4000
+    name: tile
+    protocol: TCP
+  - port: 3005
+    targetPort: 3005
+    name: api
     protocol: TCP
   selector:
     app: code-server-dvan
@@ -73,7 +81,7 @@ spec:
         runAsUser: 22107
         runAsGroup: 22107
       containers:
-      - image: codercom/code-server:4.19.1-ubuntu
+      - image: akurbanovas/code-server-dvan:v1 #codercom/code-server:4.19.1-ubuntu
         imagePullPolicy: Always
         name: code-server
         workingDir: /home/dvan
@@ -87,9 +95,11 @@ spec:
         ports:
           - containerPort: 8080
           - containerPort: 3000
+          - containerPort: 3005
+          - containerPort: 4000
         env:
         - name: PASSWORD
-          value: "*dvan@asrc*"
+          value: 
       volumes:
       - name: home
         hostPath:
