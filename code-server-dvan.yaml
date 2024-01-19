@@ -99,7 +99,10 @@ spec:
           - containerPort: 4000
         env:
         - name: PASSWORD
-          value: 
+          valueFrom:
+            secretKeyRef:
+              name: dvan-secrets
+              key: code
       volumes:
       - name: home
         hostPath:
