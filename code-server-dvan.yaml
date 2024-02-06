@@ -83,6 +83,7 @@ spec:
       securityContext:
         runAsUser: 22107
         runAsGroup: 22107
+        supplementalGroups: [202]
       containers:
       - image: akurbanovas/code-server-dvan:v1 #codercom/code-server:4.19.1-ubuntu
         imagePullPolicy: Always
