@@ -1,14 +1,14 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: coder-cert
+  name: grafana-cert
 spec:
-  secretName: coder-tls
+  secretName: grafana-cert
   renewBefore: 240h
   duration: 2160h
-  commonName: coder.xcitelab.org
+  commonName: xcite-grafana.asrc.albany.edu
   dnsNames:
-  - coder.xcitelab.org
+  - xcite-grafana.asrc.albany.edu
   issuerRef:
     name: letsencrypt-prod-xcitedb
     kind: ClusterIssuer
