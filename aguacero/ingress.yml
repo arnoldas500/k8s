@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: aguacero
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  labels:
+    app: node-test
+    app.kubernetes.io/instance: node-test-aguacero
+    appId: "2"
+    chart: node-test-4.18.1
+    envId: "3"
+    release: node-test-aguacero
+  name: node-test-aguacero-ingress
+  namespace: aguacero
+  resourceVersion: "75492335"
+  uid: 5e068755-31b6-4034-88f5-ca7a42d1bae2
+spec:
+  rules:
+    - host: xcitelab.org
+      http:
+        paths:
+          - backend:
+              service:
+                name: node-test-aguacero-service
+                port:
+                  number: 80
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - xcitelab.org 
+      secretName: secret-tls
