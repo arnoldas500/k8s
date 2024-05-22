@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: crontab-edd-lstm-inference
+  labels:
+    app: crontab-edd-lstm-inference
+  namespace: ksulia
+spec:
+  schedule: "*/15 * * * *"            ## Defined schedule using the *nix style cron syntax
+  concurrencyPolicy: Forbid   #Do not allow new cron if old is still running
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 3600 #kill after 1 hour
+      template:
+        metadata:
+          labels:
+            app: crontab-edd-lstm-inference
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                    - dgx-a100
+                    - lambda
+                    - poseidon
+                    - stellar
+                    - aether
+          containers:
+          - name: crontab-edd-lstm-inference
+            image:  ksulia/edd-inference:v1.0
+            workingDir: /home/ksulia
+            volumeMounts:
+            - name: ai2es
+              mountPath: /home/ksulia/AI2ES
+            - name: edd
+              mountPath: /home/ksulia/edd
+            - name: home
+              mountPath: /home/ksulia
+            command: ["/bin/sh"]
+            args: ["-c", "/home/ksulia/miniconda3/envs/edd/bin/python /home/ksulia/edd/xcite_team/EDD/machine_learning/scripts/outage_prediction/outage_prediction_LSTM_hrrr_inference.py"]
+            resources:
+              limits:
+                nvidia.com/gpu: 1
+          volumes:
+          - name: ai2es
+            hostPath:
+              path: /rdma/xcitedb/AI2ES
+          - name: edd
+            hostPath:
+              path: /rdma/hulk/edd
+          - name: home
+            hostPath:
+              path: /home/ksulia
+          restartPolicy: OnFailure    ##  Restart Policy in case container failed
