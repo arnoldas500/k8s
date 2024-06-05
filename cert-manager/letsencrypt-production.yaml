@@ -9,7 +9,7 @@ spec:
     server: https://acme-v02.api.letsencrypt.org/directory
     email: akurbanovas@albany.edu # ❗ Replace this with your email address
     privateKeySecretRef:
-      name: letsencrypt-test
+      name: letsencrypt-xcitedb
     solvers:
     - http01:
         ingress:
