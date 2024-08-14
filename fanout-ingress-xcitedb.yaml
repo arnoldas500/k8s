@@ -57,7 +57,7 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: web-nick-php
+            name: web-nick-php-backup
             port:
               number: 80
       - path: /ShinyApps

@@ -1,0 +1,112 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: code-server-ktellefsen
+  namespace: arnoldas
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.org/websocket-services: "code-server"
+    cert-manager.io/cluster-issuer: letsencrypt-prod-xcitedb
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "180"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "180"
+    nginx.ingress.kubernetes.io/server-snippets: |
+     location / {
+      proxysetheader Upgrade $httpupgrade;
+      proxyhttpversion 1.1;
+      proxysetheader X-Forwarded-Host $httphost;
+      proxysetheader X-Forwarded-Proto $scheme;
+      proxysetheader X-Forwarded-For $remoteaddr;
+      proxysetheader Host $host;
+      proxysetheader Connection "upgrade";
+      proxycachebypass $httpupgrade;
+      }
+     kubernetes.io/ingress.class: nginx
+     nginx.org/websocket-services: "code-server"
+#    cert-manager.io/cluster-issuer: letsencrypt-prod-xcitedb
+#    ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+#  ingressClassName: nginx
+  tls:
+    - hosts:
+      - xcitedb.asrc.albany.edu
+      secretName: letsencrypt-prod-xcitedb
+  rules:
+  - host: xcitedb.asrc.albany.edu
+    http:
+      paths:
+      - pathType: Prefix
+        path: /ktellefsen(/|$)(.*)
+        backend:
+          service:
+            name: code-server-dhoward
+            port:
+              number: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: code-server-ktellefsen
+  namespace: arnoldas
+spec:
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: main
+  - port: 3000
+    targetPort: 3000
+    name: dash
+    protocol: TCP
+  selector:
+    app: code-server-ktellefsen
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: code-server-ktellefsen
+  name: code-server-ktellefsen
+  namespace: arnoldas
+spec:
+  selector:
+    matchLabels:
+      app: code-server-ktellefsen
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: code-server-ktellefsen
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - lambda
+      securityContext:
+        runAsUser: 22110
+        runAsGroup: 22097
+      containers:
+      - image: codercom/code-server:4.19.1-ubuntu
+        imagePullPolicy: Always
+        name: code-server
+        workingDir: /home/DeepThunder
+        volumeMounts:
+        - name: home
+          mountPath: /home/DeepThunder
+        ports:
+          - containerPort: 8080
+          - containerPort: 3000
+        env:
+        - name: PASSWORD
+          value: "*ibm2024@asrc*"
+      volumes:
+      - name: home
+        hostPath:
+          path: /mnt/ceara/DeepThunder
