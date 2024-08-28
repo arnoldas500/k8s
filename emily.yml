@@ -19,11 +19,9 @@ spec:
           image: akurbanovas/coe:emily
           volumeMounts:
           - name: hulk
-            mountPath: /home/coe
-          - name: cifs
-            mountPath: /home/coe/Nick
+            mountPath: /home/dkumar
           command: ["/bin/sh"]
-          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/deepak /home/coe"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/deepak /home/dkumar"]
           imagePullPolicy: Always
 #          resources:
 #            limits:
@@ -35,8 +33,5 @@ spec:
       volumes:
       - name: hulk
         hostPath:
-          path: /rdma/hulk/coe
-      - name: cifs
-        hostPath:
-          path: /cifs/coe
+          path: /rdma/hulk/coe/dkumar/
 ---
