@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: devtroncd
+  name: postgresql-migrate-devtron-manual
+spec:
+  template:
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsUser: 1000
+      containers:
+      - name: postgresql-migrate-devtron
+        image: quay.io/devtron/migrator:ec1dcab8-149-13278
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsUser: 1000
+          runAsNonRoot: true
+        env:
+        - name: GIT_BRANCH
+          value: main
+        - name: SCRIPT_LOCATION
+          value: scripts/sql/
+        - name: GIT_REPO_URL
+          value: https://github.com/devtron-labs/devtron.git
+        - name: DB_TYPE
+          value: postgres
+        - name: DB_USER_NAME
+          value: postgres
+        - name: DB_HOST
+          value: postgresql-postgresql.devtroncd
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: orchestrator                      
+        - name: MIGRATE_TO_VERSION
+          value: "0"
+        - name: GIT_HASH
+          value: f45916a0d8c464c73736d82cf26e065d3955ca19
+        envFrom:
+          - secretRef:
+              name: postgresql-migrator
+      restartPolicy: OnFailure
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - dgx-a100
+  backoffLimit: 20
+  activeDeadlineSeconds: 1500
