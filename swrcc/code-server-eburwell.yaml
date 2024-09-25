@@ -57,7 +57,7 @@ metadata:
 spec:
  ports:
  - port: 80
-   targetPort: 8080
+   targetPort: 80
  selector:
    app: code-server-eburwell
 ---
@@ -85,10 +85,12 @@ spec:
       - image: codercom/code-server:latest
         imagePullPolicy: Always
         name: code-server
-        workingDir: /home/
+        workingDir: /home/eburwell
         volumeMounts:
         - name: home
-          mountPath: /home/
+          mountPath: /home/eburwell
+        - name: nws
+          mountPath: /home/eburwell/nws
         env:
         - name: PASSWORD
           valueFrom:
@@ -98,4 +100,7 @@ spec:
       volumes:
       - name: home
         hostPath:
-          path: /home/
+          path: /mnt/k8s-zdata/eburwell
+      - name: nws
+        hostPAth:
+	  path: /mnt/k8s-zpool/NWS
