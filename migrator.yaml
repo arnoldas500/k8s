@@ -1,13 +1,13 @@
-# Source: postgresql/templates/secrets.yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgresql-migrator
-  labels:
-    app: postgresql
-    chart: postgresql-8.6.4
-    release: "devtron"
-type: Opaque
+## Source: postgresql/templates/secrets.yaml
+#apiVersion: v1
+#kind: Secret
+#metadata:
+#  name: postgresql-migrator
+#  labels:
+#    app: postgresql
+#    chart: postgresql-8.6.4
+#    release: "devtron"
+#type: Opaque
 ---
 apiVersion: batch/v1
 kind: Job
