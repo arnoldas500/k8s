@@ -1,15 +1,32 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: code-server-eburwell
----
+#apiVersion: v1
+#kind: Namespace
+#metadata:
+#  name: code-server-eburwell
+#---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: code-server-eburwell
+  namespace: code-server
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.org/websocket-services: "code-server"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "180"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "180"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "180"
+    nginx.ingress.kubernetes.io/server-snippets: |
+     location / {
+      proxysetheader Upgrade $httpupgrade;
+      proxyhttpversion 1.1;
+      proxysetheader X-Forwarded-Host $httphost;
+      proxysetheader X-Forwarded-Proto $scheme;
+      proxysetheader X-Forwarded-For $remoteaddr;
+      proxysetheader Host $host;
+      proxysetheader Connection "upgrade";
+      proxycachebypass $httpupgrade;
+      }
 spec:
   tls:
   - hosts:
@@ -27,7 +44,7 @@ spec:
           service:
             name: code-server-eburwell
             port:
-              number: 80
+              number: 8080
   - host: "swrcc01.asrc.albany.edu"
     http:
       paths:
@@ -37,17 +54,17 @@ spec:
           service:
             name: code-server-eburwell
             port:
-              number: 80
+              number: 8080
   - host: "swrcc03.asrc.albany.edu"
     http:
       paths:
       - pathType: Prefix
-        path: "/"
+        path: "/code-server-eburwell(/|$)(.*)"
         backend:
           service:
             name: code-server-eburwell
             port: 
-              number: 80
+              number: 8080
 ---
 apiVersion: v1
 kind: Service
@@ -56,8 +73,8 @@ metadata:
  namespace: code-server
 spec:
  ports:
- - port: 80
-   targetPort: 80
+ - port: 8080
+   targetPort: 8080
  selector:
    app: code-server-eburwell
 ---
@@ -71,7 +88,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: code-server
+      app: code-server-eburwell
   replicas: 1
   template:
     metadata:
@@ -100,7 +117,7 @@ spec:
       volumes:
       - name: home
         hostPath:
-          path: /mnt/k8s-zdata/eburwell
+          path: /rdma/swrcc01/home/eburwell
       - name: nws
-        hostPAth:
-	  path: /mnt/k8s-zpool/NWS
+        hostPath:
+          path: /mnt/k8s-zdata/NWS

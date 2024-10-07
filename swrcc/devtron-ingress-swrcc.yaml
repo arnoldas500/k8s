@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: devtron-ingress-swrcc
+  namespace: devtroncd
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+    - hosts:
+        - nyswrcc.org
+      secretName: hello-kubernetes-tls
+  rules:
+    - host: nyswrcc.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: devtron-service
+                port:
+                  number: 80

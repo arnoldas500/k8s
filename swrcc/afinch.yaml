@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: afinch-jl
+  labels:
+    app: afinch-jl
+  namespace: jupyter
+spec:
+  selector:
+    matchLabels:
+      app: afinch-jl
+  template:
+    metadata:
+      labels:
+        app: afinch-jl
+    spec:
+      containers:
+        - name: afinch-jl
+          image: akurbanovas/swrcc:afinch-jl
+          volumeMounts:
+          - name: home
+            mountPath: /home/swrcc
+          - name: zpool
+            mountPath: /home/swrcc/zpool
+          - name: zdata
+            mountPath: /home/swrcc/zdata
+          command: ["/bin/sh"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/afinch /home/swrcc"]
+          imagePullPolicy: Always
+          resources:
+            limits:
+              nvidia.com/gpu: 1
+          ports:
+            - containerPort: 8888
+#            - containerPort: 8686
+#            - containerPort: 8787
+      volumes:
+      - name: home
+        hostPath:
+          path: /rdma
+      - name: zpool
+        hostPath:
+          path: /zpool
+      - name: zdata
+        hostPath:
+          path: /zdata
+
+---
