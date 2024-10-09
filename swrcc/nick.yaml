@@ -1,34 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: afinch-jl
+  name: nick-jl
   labels:
-    app: afinch-jl
+    app: nick-jl
   namespace: jupyter
 spec:
   selector:
     matchLabels:
-      app: afinch-jl
+      app: nick-jl
   template:
     metadata:
       labels:
-        app: afinch-jl
+        app: nick-jl
     spec:
-      securityContext:
-        runAsUser: 22112
-        runAsGroup: 22111
       containers:
-        - name: afinch-jl
-          image: akurbanovas/swrcc:afinch-jl
+        - name: nick-jl
+          image: akurbanovas/nick_kce:hulk
           volumeMounts:
           - name: home
             mountPath: /home/swrcc
           - name: zpool
-            mountPath: /mnt/k8s-zpool
+            mountPath: /home/swrcc/zpool
           - name: zdata
-            mountPath: /mnt/k8s-zdata
+            mountPath: /home/swrcc/zdata
           command: ["/bin/sh"]
-          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/afinch /home/swrcc"]
+          args: ["-c", "jupyter lab --ip=0.0.0.0 --no-browser --allow-root --port=8888 --NotebookApp.allow_origin='*' --NotebookApp.base_url=${NB_PREFIX}/nick /home/swrcc"]
           imagePullPolicy: Always
 #          resources:
 #            limits:
