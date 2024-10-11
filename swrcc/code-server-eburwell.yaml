@@ -107,9 +107,9 @@ spec:
         - name: home
           mountPath: /home
         - name: mnt
-          mountPath: /mnt
+          mountPath: /home/eburwell/mnt
         - name: rdma
-          mountPath: /rdma
+          mountPath: /home/eburwell/rdma
         env:
         - name: PASSWORD
           valueFrom:

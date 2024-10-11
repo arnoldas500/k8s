@@ -39,87 +39,87 @@ spec:
     http:
       paths:
       - pathType: Prefix
-        path: "/code-server-tryan(/|$)(.*)"
+        path: "/code-server-nick(/|$)(.*)"
         backend:
           service:
-            name: code-server-tryan
+            name: code-server-nick
             port:
               number: 8080
   - host: "swrcc01.asrc.albany.edu"
     http:
       paths:
       - pathType: Prefix
-        path: "/code-server-tryan(/|$)(.*)"
+        path: "/code-server-nick(/|$)(.*)"
         backend:
           service:
-            name: code-server-tryan
+            name: code-server-nick
             port:
               number: 8080
   - host: "swrcc03.asrc.albany.edu"
     http:
       paths:
       - pathType: Prefix
-        path: "/code-server-tryan(/|$)(.*)"
+        path: "/code-server-nick(/|$)(.*)"
         backend:
           service:
-            name: code-server-tryan
+            name: code-server-nick
             port: 
               number: 8080
 ---
 apiVersion: v1
 kind: Service
 metadata:
- name: code-server-tryan
+ name: code-server-nick
  namespace: code-server
 spec:
  ports:
  - port: 8080
    targetPort: 8080
  selector:
-   app: code-server-tryan
+   app: code-server-nick
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: code-server-tryan
-  name: code-server-tryan
+    app: code-server-nick
+  name: code-server-nick
   namespace: code-server
 spec:
   selector:
     matchLabels:
-      app: code-server-tryan
+      app: code-server-nick
   replicas: 1
   template:
     metadata:
       labels:
-        app: code-server-tryan
+        app: code-server-nick
     spec:
       securityContext:
-        runAsUser: 22116
+        runAsUser: 22080
         runAsGroup: 22111
       containers:
       - image: codercom/code-server:latest
         imagePullPolicy: Always
         name: code-server
-        workingDir: /home/tryan
+        workingDir: /home/nick
         volumeMounts:
         - name: home
           mountPath: /home
         - name: mnt
-          mountPath: /mnt
+          mountPath: /home/nick/mnt
         - name: rdma
-          mountPath: /rdma
+          mountPath: /home/nick/rdma
         env:
         - name: PASSWORD
           valueFrom:
             secretKeyRef:
-              name: tryan-secrets
+              name: nick-secrets
               key: code
       volumes:
       - name: home
         hostPath:
-          path: /rdma/swrcc01/home/tryan
+          path: /rdma/swrcc01/home/nick
       - name: mnt
         hostPath:
           path: /mnt/

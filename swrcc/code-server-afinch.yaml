@@ -107,9 +107,9 @@ spec:
         - name: home
           mountPath: /home
         - name: mnt
-          mountPath: /mnt
+          mountPath: /home/afinch/mnt
         - name: rdma
-          mountPath: /rdma
+          mountPath: /home/afinch/rdma
         env:
         - name: PASSWORD
           valueFrom:
